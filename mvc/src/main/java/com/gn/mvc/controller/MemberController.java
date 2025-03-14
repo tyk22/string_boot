@@ -37,7 +37,10 @@ public class MemberController {
 //		resultMap.put("res_code", "500");
 //		resultMap.put("res_msg", "회원가입에 실패했습니다");
 //		}
+		
+		
 		// fk값 중복일때 예외처리 Exception 로 넘김
+		// try~catch문은 service로 넣어야함
 		try {
 			if(service.createMember(dto)!=null) {
 				resultMap.put("res_code", "400");
@@ -47,6 +50,8 @@ public class MemberController {
 			resultMap.put("res_code", "500");
 			resultMap.put("res_msg", "회원가입에 실패했습니다");
 		}
+		// try~catch문은 service로 넣어야함
+		
 		
 		return resultMap;
 	}

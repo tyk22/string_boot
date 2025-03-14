@@ -3,7 +3,8 @@ package com.gn.mvc.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor // 3번 - "lombok" 이 대신 만들어줌
 public class BoardController {
+	
+	private Logger logger = LoggerFactory.getLogger(BoardController.class);
 	// 1. 필드 주입 방법 - 순환 참조 생길 가능성 있음(무한루프)
 //	@Autowired
 //	BoardService service;
@@ -58,9 +61,14 @@ public class BoardController {
 		Map<String, String> resultMap = new HashMap<String,String>();
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "게시글 등록중 오류가 발생하였습니다.");
-		System.out.println(dto);
 		// Service가 가지고 있는 createBoard 메소드 호출
-		service.createBoard(dto);
+		
+		BoardDto result = service.createBoard(dto);
+		
+		logger.debug("1 : "+result.toString());
+		logger.info("2 : "+result.toString());
+		logger.warn("3 : "+result.toString());
+		logger.error("4 : "+result.toString());
 		
 		return resultMap;
 	}

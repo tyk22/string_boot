@@ -1,5 +1,7 @@
 package com.gn.mvc.dto;
 
+import java.time.LocalDateTime;
+
 import com.gn.mvc.entity.Member;
 
 import lombok.AllArgsConstructor;
@@ -20,22 +22,30 @@ public class MemberDto {
 	private String member_id;
 	private String member_pw;
 	private String member_name;
+	private LocalDateTime reg_date;
+	private LocalDateTime mod_date;
 	
+	// 굳인 안넣어도 잘 들어가는 이유? spring이 친철해서 되는거
+	// 수정시 회원가입 데이터가 필요함으로 설정하는게 맞음
 	public Member toEntity() {
 		return Member.builder()
 				.memberNo(member_no)
 				.memberId(member_id)
 				.memberPw(member_pw)
 				.memberName(member_name)
+//				.regDate(reg_date)
+//				.modDate(mod_date)
 				.build();
 	}
-	
+	// 위에는 필요없고 아래에만 추가하면 됨
 	public MemberDto toDto(Member member) {
 		return MemberDto.builder()
 				.member_no(member.getMemberNo())
 				.member_id(member.getMemberId())
 				.member_pw(member.getMemberPw())
 				.member_name(member.getMemberName())
+				.reg_date(member.getRegDate())
+				.mod_date(member.getModDate())
 				.build();
 	}
 }
