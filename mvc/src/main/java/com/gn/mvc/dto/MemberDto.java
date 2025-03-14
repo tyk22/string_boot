@@ -26,7 +26,6 @@ public class MemberDto {
 	private LocalDateTime mod_date;
 	
 	// 굳인 안넣어도 잘 들어가는 이유? spring이 친철해서 되는거
-	// 수정시 회원가입 데이터가 필요함으로 설정하는게 맞음
 	public Member toEntity() {
 		return Member.builder()
 				.memberNo(member_no)
