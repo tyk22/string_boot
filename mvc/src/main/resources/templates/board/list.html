@@ -10,6 +10,12 @@ layout:decorate="~{/include/layout}">
 				<h3>게시글 목록</h3>
 			</div><br>
 			<form action="/board" name="search_board_form" method="get" >
+				<div class="sort">
+					<select id="order_type" name="order_type">
+						<option value="1" th:selected="${searchDto.order_type==1}">최신순</option>
+						<option value="2" th:selected="${searchDto.order_type==2}">오래된순</option>
+					</select>
+				</div>
 				<div class="search">
 					<select name="search_type">
 						<option value="1" th:selected="${searchDto.search_type==1}">제목</option>
@@ -57,6 +63,21 @@ layout:decorate="~{/include/layout}">
 			<br>
 			<a style="border:1px solid black;" th:href="@{/board/create}">게시글 등록</a>
 		</div>
-		</section>	
+		</section>
+		<script>
+			document.getElementById('order_type').addEventListener('change',function(e){
+				const orderType = e.target.value;
+				location.href="/board?order_type="+orderType;
+			});
+		</script>
 	</th:block>
 </html>
+
+
+
+
+
+
+
+
+
