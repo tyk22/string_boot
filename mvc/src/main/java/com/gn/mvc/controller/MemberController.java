@@ -18,11 +18,16 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService service;
 	
-	@GetMapping("/member/create")
+	@GetMapping("/login")
+	public String loginView() {
+		return "member/login";
+	}
+	
+	@GetMapping("/signup")
 	public String createMemberView() {
 		return "member/create";
 	}
-	@PostMapping("/member")
+	@PostMapping("/signup")
 	@ResponseBody
 	public Map<String, String> createMemberApi(MemberDto dto){
 		Map<String, String> resultMap= new HashMap<String,String>();
@@ -43,7 +48,7 @@ public class MemberController {
 		// try~catch문은 service로 넣어야함
 		try {
 			if(service.createMember(dto)!=null) {
-				resultMap.put("res_code", "400");
+				resultMap.put("res_code", "200");
 				resultMap.put("res_msg", "회원가입에 성공했습니다.");
 			}
 		}catch (Exception e) {

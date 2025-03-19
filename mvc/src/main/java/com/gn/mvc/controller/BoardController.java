@@ -149,17 +149,54 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, String >updateBoardApi(BoardDto param) {
 		// 1. BoardDto 출력(전달 확인)
-		//logger.info("BoardDto : "+param);
+		logger.info("BoardDto : "+param);
+		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "게시글 수정 실패");
 		
 		logger.info("삭제 파일 정보 : "+param.getDelete_files());
-		// 2. BoardService -> BoardRepository 게시글 수정
-		// Board saved = scrvice.updateBoard(param);
-		//if(service.updateBoard(param).getBoard_no()!=null) {
-		//resultMap.put("res_code", "200");
-		//resultMap.put("res_msg", "게시글 수정 성공");
+		// 2. BoardService -> BoardRepository 게시글 수정 -> 파일 삭제
+		 Board saved = service.updateBoard(param);
+		 
+		 
+		 // 기존 정보 넣어야함
+		 List<Board> boardList = new ArrayList<Board>();
+		 boardList.add(saved);
+		 
+		 // 새로 넣을 사진
+		 List<AttachDto> attachDtoList = new ArrayList<AttachDto>();
+			
+		 	// 사진 업로드
+			for(MultipartFile mf:param.getFiles()) {
+				AttachDto attachDto = attachService.uploadFile(mf);
+				if(attachDto!=null) attachDtoList.add(attachDto);
+			}
+			
+//			if(param.getFiles().size()==attachDtoList.size()) {
+//				
+//			}else {
+			
+				int result = service.createBoard(param,attachDtoList);
+				if(boardList!=null&&result>0) {
+					resultMap.put("res_code", "200");
+					resultMap.put("res_msg", "게시글이 수정되었습니다.");
+				}
+			//} 
+			
+			
+			
+			
+			
+//		 if(boardList!=null && attachDtoList !=null) {
+//			 resultMap.put("res_code", "200");
+//			 resultMap.put("res_msg", "게시글 수정 성공");
+//		 }
+		 
+			
+			
+			
+		//if(service.updateBoard(param).getBoardNo()!=null) {
 		//}
 		// 3. 수정 결과 Entity가 null이 아니면 성공 그외에는 실패
 		

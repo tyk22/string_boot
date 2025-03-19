@@ -31,6 +31,8 @@ public class BoardService {
 	
 	private final BoardRepository repository;
 	private final AttachRepository attachRepository;
+	private final AttachService attachService;
+	
 	public Board selectBoardOne(Long id) {
 		// 조회된게 없다면 null
 		return repository.findById(id).orElse(null);
@@ -125,11 +127,11 @@ public class BoardService {
 		//return new BoardDto().toDto(result);
 	}
 	// 내가쓴거
-	public BoardDto updateBoard(BoardDto dto) {
+	/*public BoardDto updateBoard(BoardDto dto) {
 		Board param = dto.toEntity();
 		Board result = repository.save(param);
 		return new BoardDto().toDto(result);
-	}
+	}*/
 	
 	public int deleteBoard(Long id) {
 		int result = 0;
@@ -163,16 +165,32 @@ public class BoardService {
 //		return result;
 //	}
 	// 강사님 코드 
-//	public Board updateBoard(BoardDto param) {
-//		Board result = null;
-//		// 1. @Id를 쓴 필드를 기준으로 타겟 조회
-//		Board target = repository.findById(param.getBoard_no()).orElse(null);
-//		// 2. 타겟이 존재하는 경우 업데이트
-//		if(target != null) {
-//			result = repository.save(param.toEntity());
-//		}
-//		return result;
-//	}
+	@Transactional(rollbackFor = Exception.class)
+	public Board updateBoard(BoardDto param) {
+		Board result = null;
+		try {
+			// 1. @Id를 쓴 필드를 기준으로 타겟 조회
+			Board target = repository.findById(param.getBoard_no()).orElse(null);
+			// 2. 타겟이 존재하는 경우 업데이트
+			if(target != null) {
+				// 3. 파일이 존재하는 경우
+				if(param.getDelete_files() != null 
+						&& !param.getDelete_files().isEmpty()) {
+					for(Long attach_no:param.getDelete_files()) {
+						// (2) DB에서 메타 데이터 삭제[순서는 상관없는데 이게 옳은 방법]
+						if(attachService.deleteFileData(attach_no)>0){
+							// (1) 메모리에서 파일 자체 삭제
+							attachService.deleteMetaData(attach_no);
+						}
+					}
+				}
+				result = repository.save(param.toEntity());
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 //	public int updateBoard(BoardDto dto) {
 //		int result =0;
