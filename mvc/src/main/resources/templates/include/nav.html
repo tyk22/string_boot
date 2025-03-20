@@ -24,6 +24,10 @@
 							<li>
 								<a th:href="@{/board}">게시판</a>
 							</li>
+							<li>
+								<a th:href="@{/member/{memberNo}/update(memberNo=${#authentication.principal.member.memberNo})}">
+								회원 수정</a>
+							</li>
 						</th:block>
 					</ul>
 				</div>
