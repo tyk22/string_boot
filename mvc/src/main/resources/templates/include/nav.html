@@ -28,10 +28,38 @@
 								<a th:href="@{/member/{memberNo}/update(memberNo=${#authentication.principal.member.memberNo})}">
 								회원 수정</a>
 							</li>
+							<li>
+								<a th:onclick="|javascript:memberDelete('${#authentication.principal.member.memberNo}')|">
+								회원 탈퇴</a>
+							</li>
+							
 						</th:block>
 					</ul>
 				</div>
 			</div>
 		</nav>
+		<script>
+								
+		const memberDelete = function(memberNo){
+			console.log(memberNo);
+			
+			if(confirm('탈퇴하시겠습니까?')){
+			fetch("/member/"+memberNo,{
+			method: "delete",
+			headers: {
+              'header': document.querySelector('meta[name="_csrf_header"]').content,
+              'X-CSRF-Token': document.querySelector('meta[name="_csrf"]').content
+			}	
+			})
+			.then(response => response.json())
+			.then(data => {
+				alert(data.res_msg);
+				if(data.res_code == 200){
+					location.href="/";
+				}
+			});
+			}
+		}
+	</script>
 	</th:block>
 </html>

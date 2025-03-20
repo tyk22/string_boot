@@ -25,6 +25,30 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final DataSource dataSource;
 	private final UserDetailsService userDetailsService;
+	
+	public int deleteMember(Long id) {
+		int result = 0;
+		try {
+			Member target = repository.findById(id).orElse(null);
+			if(target!=null) {
+				repository.deleteById(id);
+				
+				JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+				String sql = "DELETE FROM persistent_logins WHERE username = ?";
+				jdbcTemplate.update(sql,target.getMemberId());
+				SecurityContextHolder.getContext().setAuthentication(null);
+			}
+			
+			result=1;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return result;
+	}
+	
 	// 1. 반환형 : int 
 	// 2. 메소드명 : updateMember
 	// 3. 매개변수 : MemberDto ( param )

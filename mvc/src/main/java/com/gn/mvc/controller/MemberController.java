@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,23 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService service;
 	
+	@DeleteMapping("/member/{id}")
+	@ResponseBody
+	public Map<String,String> deleteMamberApi(
+			@PathVariable("id") Long id){
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("res_code", "500");
+		resultMap.put("res_msg", "회원 탈퇴 실패");
+		
+		int result = service.deleteMember(id);
+		if(result>0) {
+		resultMap.put("res_code", "200");
+		resultMap.put("res_msg", "회원 탈퇴 성공");	
+		}
+		
+		return resultMap;
+		
+	}
 	
 	@PostMapping("/member/{id}/update")
 	@ResponseBody
