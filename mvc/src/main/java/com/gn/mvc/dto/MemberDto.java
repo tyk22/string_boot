@@ -24,7 +24,7 @@ public class MemberDto {
 	private String member_name;
 	private LocalDateTime reg_date;
 	private LocalDateTime mod_date;
-	
+	private String member_role;
 	// 굳인 안넣어도 잘 들어가는 이유? spring이 친철해서 되는거
 	public Member toEntity() {
 		return Member.builder()
@@ -32,6 +32,7 @@ public class MemberDto {
 				.memberId(member_id)
 				.memberPw(member_pw)
 				.memberName(member_name)
+				.memberRole(member_role)
 //				.regDate(reg_date)
 //				.modDate(mod_date)
 				.build();
