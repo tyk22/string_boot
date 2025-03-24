@@ -17,7 +17,7 @@
 						</th:block>
 						<th:block sec:authorize="isAuthenticated()">
 							<li>
-								<form th:action="@{logout}" method="post">
+								<form th:action="@{/logout}" method="post">
 									<input type="submit" value="로그아웃">
 								</form>
 							</li>
