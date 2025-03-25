@@ -1,40 +1,90 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+layout:decorate="~{/include/layout}">
+	<th:block>
+	<script th:src="@{/js/jquery-3.7.1.js}"></script>
 	<h1>할 일 목록</h1>
-	
-	<form>
-		내용:
-		<input type="text">
-		<button type="submit">검색</button>
-	</form>
+	<div class="search">
+			내용:
+			<input type="text">
+			<input type="submit" value="검색">
+	</div>
 	<br>
-	<table border="1">
-		<thead>
-			<tr>
-				<td>완료</td>
-				<td>번호</td>
-				<td>내용</td>
-				<td>삭제</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:if="${#lists.isEmpty(todoList)}">
-				<td colspan="4">게시글이 없습니다.</td>
-			</tr>
-			<tr th:if="${!#lists.isEmpty(todoList)}"
-				th:each="todo : ${todoList}">
-				<td>
-					<input type="checkbox">
-				</td>
-				<td th:text="${todo.no}"></td>
-				<td th:text="${todo.content}"></td>
-			</tr>
-		</tbody>
-	</table>
-</body>
+	<div class="todo_list">
+		<table border="1">
+			<thead>
+				<tr>
+					<td>완료</td>
+					<td>번호</td>
+					<td>내용</td>
+					<td>삭제</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${#lists.isEmpty(todoList)}">
+					<td colspan="4">게시글이 없습니다.</td>
+				</tr>
+				<tr th:if="${!#lists.isEmpty(todoList)}"
+					th:each="todo : ${todoList}">
+					<td >
+						<input type="checkbox">
+					</td>
+					
+					<td th:text="${todo.no}"></td>
+					<td th:text="${todo.content}"></td>
+					<td>
+						<!-- <input type="button" value="삭제"> -->
+						<button th:attr="data-todo-no=${todo.no}">삭제</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h1>할 일 추가</h1>
+	<div class="create_todo">
+	
+		<input id="create_content" type="text" placeholder="할일을 입력하세요.">
+		<button>추가하기</button>
+		
+	</div>
+	<script>
+		$(function(){
+			$('.create_todo button').on('click',function(){
+				const content = document.getElementById('create_content').value;
+				
+				console.log(content);
+				fetch("/home",{
+					method : "post",
+					body:content
+				})
+				.then(response=>response.json())
+				.then(data=>{
+					alert(data.res_msg);
+				})
+			})
+		})
+	
+		$(function(){
+			$('.todo_list tbody tr button').on('click',function(){
+				const no = $(this).data('todo-no'); 
+				console.log(no);
+				if(confirm("삭제하시겠습니까?")){
+					fetch("/home/"+no,{
+						method : "delete",
+					})
+					.then(response=>response.json())
+					.then(data=>{
+						alert(data.res_msg);
+						// 있어야 하나 ↓
+						if(data.res_code==200){
+							location.href='/';
+						}
+					})
+				}
+			});
+		})
+	
+	</script>
+	</th:block>
 </html>
