@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>할 일 목록</h1>
+	
+	<form>
+		내용:
+		<input type="text">
+		<button type="submit">검색</button>
+	</form>
+	<br>
+	<table border="1">
+		<thead>
+			<tr>
+				<td>완료</td>
+				<td>번호</td>
+				<td>내용</td>
+				<td>삭제</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${#lists.isEmpty(todoList)}">
+				<td colspan="4">게시글이 없습니다.</td>
+			</tr>
+			<tr th:if="${!#lists.isEmpty(todoList)}"
+				th:each="todo : ${todoList}">
+				<td>
+					<input type="checkbox">
+				</td>
+				<td th:text="${todo.no}"></td>
+				<td th:text="${todo.content}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
