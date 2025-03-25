@@ -13,7 +13,7 @@ import com.gn.todo.entity.Todo;
 public interface TodoRepository extends JpaRepository<Todo, Long>
 	,JpaSpecificationExecutor<Todo>{
 	
-	//List<Todo> findAll(Specification<Todo> spec);
+	//List<Todo> findAll(Specification<Todo> spec, Pageable pageable);
 //	List<Todo> findByAll(Specification<Todo> spec,Pageable pageable );
 //	
 //	List<Todo> findByTodoContentContaining(String keyword);

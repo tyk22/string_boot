@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gn.todo.dto.PageDto;
 import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
@@ -31,6 +33,21 @@ public class HomeController {
 		model.addAttribute("todoList",resultList);
 		return "/home";
 	}
+	
+//	@GetMapping("/test")
+//	public String selectTodoAll(Model model, SearchDto searchDto, PageDto pageDto) {
+//		
+//		if(pageDto.getNowPage()==0) pageDto.setNowPage(1);
+//		
+//		Page<Todo> resultList = service.selectTodoAllTest(searchDto,pageDto);
+//		
+//		
+//		
+//		return "/home";
+//	}
+	
+	
+	
 	
 	@PostMapping("/home/{id}/update")
 	@ResponseBody

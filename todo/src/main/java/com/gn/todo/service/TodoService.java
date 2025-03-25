@@ -3,14 +3,19 @@ package com.gn.todo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.gn.todo.dto.PageDto;
+import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.repositor.TodoRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -88,5 +93,19 @@ public class TodoService {
 		list= repository.findAll(spec);
 		return list;
 	}
+	
+//	public Page<Todo> selectTodoAllTest(SearchDto searchDto, PageDto pageDto){
+//		Pageable pageable = PageRequest.of(pageDto.getNowPage()-1, pageDto.getNumPerPage());
+//		
+//			pageable = PageRequest.of(pageDto.getNowPage()-1, pageDto.getNumPerPage());
+//		
+//		
+//		Specification<Todo> spec = (root,query,CriteriaBuilder) -> null;
+//
+//		Page<Todo> list = repository.findAll(spec,pageable);
+//		return list;
+//	}
+	
+	
 	
 }
