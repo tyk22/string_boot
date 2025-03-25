@@ -10,6 +10,7 @@ import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.repositor.TodoRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +27,31 @@ public class TodoService {
 //		Page<Todo> list = repository.findAll(spec,pageable);
 //		return list;
 //	}
+	
+
+	public Todo updateTodo(Long id) {
+		Todo result = null;
+		try {
+			
+			Todo target = repository.findById(id).orElse(null);
+			char tests = target.getFlag();
+			//System.out.println(target.getFlag());
+			//System.out.println(tests);
+			if(target!=null) {
+				if(tests!='N') {
+					target.setFlag('N');
+				}else {
+					target.setFlag('Y');
+				}
+			}
+			result = repository.save(target);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public int createTodo(TodoDto dto) {
 		int result = 0;
 		try {

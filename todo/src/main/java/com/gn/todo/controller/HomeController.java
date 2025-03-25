@@ -32,12 +32,28 @@ public class HomeController {
 		return "/home";
 	}
 	
+	@PostMapping("/home/{id}/update")
+	@ResponseBody
+	public Map<String, String> updateTodoApi(
+			@PathVariable("id") Long id){
+		Map<String,String>resultMap = new HashMap<String, String>()	;
+		System.out.println(id);
+		resultMap.put("res_code", "500");
+		resultMap.put("res_msg", "수정 오류");
+		
+		Todo saved = service.updateTodo(id);
+		if(saved!=null) {
+			resultMap.put("res_code", "200");
+			resultMap.put("res_msg", "수정 완료");	
+		}
+		return resultMap;
+	}
+	
 	@PostMapping("/home")
 	@ResponseBody
 	public Map<String, String> createTodoApi(
 			TodoDto dto){
 		Map<String,String>resultMap = new HashMap<String, String>()	;
-		System.out.println(dto.getContent());
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "추가 오류");
 		int result = service.createTodo(dto);

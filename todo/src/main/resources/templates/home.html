@@ -27,8 +27,14 @@ layout:decorate="~{/include/layout}">
 				</tr>
 				<tr th:if="${!#lists.isEmpty(todoList)}"
 					th:each="todo : ${todoList}">
-					<td >
-						<input type="checkbox">
+					
+					<td th:if="${#strings.equals(todo.flag,'N')}">
+						<input th:attr="data-no=${todo.no}"
+							type="checkbox" class="checeds">
+					</td>
+					<td th:if="${#strings.equals(todo.flag,'Y')}">
+						<input th:attr="data-no=${todo.no}"
+						type="checkbox" checked="checked" class="checeds">
 					</td>
 					
 					<td th:text="${todo.no}"></td>
@@ -70,7 +76,23 @@ layout:decorate="~{/include/layout}">
 			
 		})
 		
-	
+		$(function(){
+			$('.checeds').on('click',function(){
+				const no = $(this).data('no');
+				fetch('/home/'+no+'/update',{
+					method:'post',
+					body:no
+				})
+				.then(response=>response.json())
+				.then(data=>{
+					if(data.res_code==200){
+						alert(data.res_msg);
+						//location.href='/';
+						location.reload();
+					}
+				});
+			})
+		})
 		/*$(function(){
 			$('.create_todo button').on('click',function(){
 				const content = document.getElementById('create_content').value;
