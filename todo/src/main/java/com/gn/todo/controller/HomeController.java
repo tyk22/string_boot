@@ -37,9 +37,14 @@ public class HomeController {
 	public Map<String, String> createTodoApi(
 			TodoDto dto){
 		Map<String,String>resultMap = new HashMap<String, String>()	;
-		System.out.println(dto.toString());
+		System.out.println(dto.getContent());
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "추가 오류");
+		int result = service.createTodo(dto);
+		if(result>0) {
+			resultMap.put("res_code", "200");
+			resultMap.put("res_msg", "추가 성공");
+		}
 		return resultMap;
 	}
 	

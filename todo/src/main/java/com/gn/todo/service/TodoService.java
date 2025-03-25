@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.gn.todo.dto.SearchDto;
+import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.repositor.TodoRepository;
 
@@ -26,6 +26,19 @@ public class TodoService {
 //		Page<Todo> list = repository.findAll(spec,pageable);
 //		return list;
 //	}
+	public int createTodo(TodoDto dto) {
+		int result = 0;
+		try {
+			
+			Todo entity = dto.toEntity();
+			repository.save(entity);
+			result = 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public int deleteTodo(Long id) {
 		int result = 0;
 		try {

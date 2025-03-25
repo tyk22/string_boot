@@ -43,13 +43,35 @@ layout:decorate="~{/include/layout}">
 	</div>
 	<h1>할 일 추가</h1>
 	<div class="create_todo">
-	
-		<input id="create_content" type="text" placeholder="할일을 입력하세요.">
+		<form action='/home' name="create_todo_form" method="post" enctype="multipart/form-data">
+		<input name="content" type="text" placeholder="할일을 입력하세요.">
+		<input type="hidden" name="flag" value="N">
 		<button>추가하기</button>
-		
+		</form>
 	</div>
 	<script>
-		$(function(){
+		const form = document.create_todo_form;
+		form.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			
+		
+			const payload = new FormData(form);
+			fetch("/home",{
+				method : "post",
+				body:payload
+			})
+			.then(response=>response.json())
+			.then(data=>{
+				alert(data.res_msg);
+				if(data.res_code==200){
+					location.href='/';
+				}
+			})
+			
+		})
+		
+	
+		/*$(function(){
 			$('.create_todo button').on('click',function(){
 				const content = document.getElementById('create_content').value;
 				
@@ -63,7 +85,7 @@ layout:decorate="~{/include/layout}">
 					alert(data.res_msg);
 				})
 			})
-		})
+		})*/
 	
 		$(function(){
 			$('.todo_list tbody tr button').on('click',function(){
