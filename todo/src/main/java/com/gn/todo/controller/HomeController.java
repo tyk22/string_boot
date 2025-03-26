@@ -43,7 +43,7 @@ public class HomeController {
 		model.addAttribute("todoList",resultList.getContent());
 		model.addAttribute("searchDto",searchDto);
 		model.addAttribute("pageDto",pageDto);
-		return "/home";
+		return "home";
 	}
 	
 //	@GetMapping("/test")
