@@ -15,5 +15,8 @@ public class TodoSpecification {
 //		return (root,query,criteriaBuilder)->
 //		criteriaBuilder.
 //	}
-	
+	public static Specification<Todo> todoContentContains(String keyword){
+		return (root,query,criteriaBuilder)->
+		criteriaBuilder.like(root.get("content"), "%"+keyword+"%");
+	}
 }

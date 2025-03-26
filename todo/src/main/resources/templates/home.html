@@ -5,13 +5,14 @@ layout:decorate="~{/include/layout}">
 	<th:block>
 	<script th:src="@{/js/jquery-3.7.1.js}"></script>
 	<h1>할 일 목록</h1>
-	<!-- <form action="/test" name="search_todo_form" method="get"> -->
-	<div class="search">
-			내용:
+	
+	<form action="/" method="get">
+			<label for="search_text">내용 : </label>
 			<input type="text" name="search_text">
+			<!-- th:value="${searchDto.serachText}" -->
+			
 			<input type="submit" value="검색">
-	</div>
-	<!-- </form> -->
+	</form> 
 	<br>
 	<div class="todo_list">
 		<table border="1">
@@ -28,7 +29,7 @@ layout:decorate="~{/include/layout}">
 					<td colspan="4">조회된 데이터가 없습니다.</td>
 				</tr>
 				<tr th:if="${!#lists.isEmpty(todoList)}"
-					th:each="todo : ${todoList}">
+					th:each="todo, todoStatus : ${todoList}">
 					
 					<td th:if="${#strings.equals(todo.flag,'N')}">
 						<input th:attr="data-no=${todo.no}"
@@ -38,8 +39,7 @@ layout:decorate="~{/include/layout}">
 						<input th:attr="data-no=${todo.no}"
 						type="checkbox" checked="checked" class="checeds">
 					</td>
-					
-					<td th:text="${todo.no}"></td>
+					<td th:text="${todoStatus.count}"></td>
 					<td th:text="${todo.content}"></td>
 					<td>
 						<!-- <input type="button" value="삭제"> -->
@@ -48,6 +48,9 @@ layout:decorate="~{/include/layout}">
 				</tr>
 			</tbody>
 		</table>
+		<div>
+			페이징자리
+		</div>
 	</div>
 	<h1>할 일 추가</h1>
 	<div class="create_todo">
@@ -87,7 +90,7 @@ layout:decorate="~{/include/layout}">
 				})
 				.then(response=>response.json())
 				.then(data=>{
-					if(data.res_code==200){
+					if(data.res_code==500){
 						alert(data.res_msg);
 						//location.href='/';
 						location.reload();

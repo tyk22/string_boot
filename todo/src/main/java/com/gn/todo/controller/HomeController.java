@@ -26,11 +26,23 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
 	
 	private final TodoService service;
+	
 	@GetMapping({"","/"})
-	public String home(Model model, SearchDto searchDto) {
-		List<Todo> resultList = service.selectTodoAll();		
+	public String home(Model model, SearchDto searchDto, PageDto pageDto) {
 		
-		model.addAttribute("todoList",resultList);
+		if(pageDto.getNowPage()==0) pageDto.setNowPage(1);
+		
+		Page<Todo> resultList = service.selectTodoAll(searchDto,pageDto);		
+		
+//		if(resultList.isEmpty()) {
+//			resultList = null;
+//		}
+		
+		pageDto.setTotalPage(resultList.getTotalPages());
+		
+		model.addAttribute("todoList",resultList.getContent());
+		model.addAttribute("searchDto",searchDto);
+		model.addAttribute("pageDto",pageDto);
 		return "/home";
 	}
 	
@@ -54,7 +66,6 @@ public class HomeController {
 	public Map<String, String> updateTodoApi(
 			@PathVariable("id") Long id){
 		Map<String,String>resultMap = new HashMap<String, String>()	;
-		System.out.println(id);
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "수정 오류");
 		
@@ -73,6 +84,13 @@ public class HomeController {
 		Map<String,String>resultMap = new HashMap<String, String>()	;
 		resultMap.put("res_code", "500");
 		resultMap.put("res_msg", "추가 오류");
+		
+		/*Todo result = service.createTodo(dto);
+		 * if(result!=null){
+		 * 성공
+		 * }
+		 */
+	
 		int result = service.createTodo(dto);
 		if(result>0) {
 			resultMap.put("res_code", "200");

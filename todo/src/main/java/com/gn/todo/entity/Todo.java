@@ -31,7 +31,7 @@ public class Todo {
 	
 	@Column(name="flag")
 	private char flag;
-	
+	// private String flag;
 	
 	
 }

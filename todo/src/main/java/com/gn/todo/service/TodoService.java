@@ -15,6 +15,7 @@ import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.repositor.TodoRepository;
+import com.gn.todo.specification.TodoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +40,20 @@ public class TodoService {
 		try {
 			
 			Todo target = repository.findById(id).orElse(null);
+			/*
+			 * TodoDto dto = TodoDto.builder()
+			 * 						.no(target.getNo())
+			 * 						.content(target.getContent())
+			 * 						.flag(target.getFlag())
+			 * 						.build();
+			 * if(target!=null){
+			 * 		if("Y".equals(target.getFlag())) dto.setFlag("N");
+			 * 		else dto.setFlag("Y");
+			 * }
+			 * return repository.save(dto.toEntity);
+			 */
+			
+			
 			char tests = target.getFlag();
 			//System.out.println(target.getFlag());
 			//System.out.println(tests);
@@ -56,6 +71,14 @@ public class TodoService {
 		
 		return result;
 	}
+	
+	/*
+	 * public Todo createTodo(TodoDto dto){
+	 * 		Todo entity = dto.toEntity();
+	 * 		Todo result = repository.save(entity);
+	 * 		return result;
+	 * }
+	 */
 	
 	public int createTodo(TodoDto dto) {
 		int result = 0;
@@ -84,14 +107,19 @@ public class TodoService {
 		return result;
 	}
 	
-	public List<Todo> selectTodoAll( ){
-		Specification<Todo> spec = (root,query,CriteriaBuilder) -> null;
-		//spec = spec.and(TodoSpecification.todoContentContains());
+	public Page<Todo> selectTodoAll(SearchDto searchDto, PageDto pageDto){
 		
-		List<Todo> list =new ArrayList<Todo>();
+		Pageable  pageable
+				=PageRequest.of(pageDto.getNowPage()-1, pageDto.getNumPerPage());
+		
+		Specification<Todo> spec = (root,query,CriteriaBuilder) -> null;
+		if(searchDto.getSearch_text()!=null) {
+			spec = spec.and(TodoSpecification.todoContentContains(searchDto.getSearch_text()));
+		}
+		
 		//list=repository.findByContentLike();
-		list= repository.findAll(spec);
-		return list;
+		
+		return repository.findAll(spec,pageable);
 	}
 	
 //	public Page<Todo> selectTodoAllTest(SearchDto searchDto, PageDto pageDto){

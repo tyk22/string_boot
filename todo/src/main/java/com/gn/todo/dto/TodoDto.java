@@ -17,7 +17,7 @@ public class TodoDto {
 	private Long no;
 	private String content;
 	private char flag;
-	
+	// private String flag ="N";
 	public Todo toEntity() {
 		return Todo.builder()
 				.no(no)
