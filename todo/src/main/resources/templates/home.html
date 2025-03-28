@@ -4,6 +4,31 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 layout:decorate="~{/include/layout}">
 	<th:block>
 	<script th:src="@{/js/jquery-3.7.1.js}"></script>
+	
+	<h1>파일 목록</h1>
+	<form name="create_file_form">
+		<input type="file" name="files" multiple>
+		<input type="submit" value="업로드">
+	</form>
+	<script>
+		const forms = document.create_file_form;
+		forms.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			const payload = new FormData(forms);
+			fetch("/attach/create",{
+				method : "post",
+				body:payload
+			})
+			.then(response => response.json())
+			.then(data => {
+				alert(data.res_msg);
+				if(data.res_code==200){
+					location.href='/';
+				}
+			})
+			
+		})
+	</script>
 	<h1>할 일 목록</h1>
 	
 	<form action="/" method="get">
