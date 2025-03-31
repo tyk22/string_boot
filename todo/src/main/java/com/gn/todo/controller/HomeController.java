@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gn.todo.dto.PageDto;
 import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
+import com.gn.todo.entity.Attach;
 import com.gn.todo.entity.Todo;
+import com.gn.todo.service.AttachService;
 import com.gn.todo.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
 	
 	private final TodoService service;
-	
+	private final AttachService attachService;
 	@GetMapping({"","/"})
 	public String home(Model model, SearchDto searchDto, PageDto pageDto) {
 		
@@ -37,6 +39,9 @@ public class HomeController {
 //		if(resultList.isEmpty()) {
 //			resultList = null;
 //		}
+		
+		List<Attach> attachList = attachService.selectAttachList();
+		model.addAttribute("attachList",attachList);
 		
 		pageDto.setTotalPage(resultList.getTotalPages());
 		

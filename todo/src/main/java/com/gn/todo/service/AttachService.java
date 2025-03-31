@@ -1,6 +1,7 @@
 package com.gn.todo.service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,16 @@ public class AttachService {
 	
 	@Autowired
 	public final AttachRepository attachRepository;
+	
+	public Attach selectAttachOne(Long id) {
+		return attachRepository.findById(id).orElse(null);
+	}
+	
+	public List<Attach> selectAttachList(){
+		List<Attach> list = new ArrayList<Attach>();
+		list = attachRepository.findAll();
+		return list;
+	}
 	
 	@Value("${ffupload.location}")
 	private String fileDir;
@@ -78,7 +89,7 @@ public class AttachService {
 	
 	// 2. 파일 메타 데이터 insert
 	
-	public int createAttach(List<AttachDto> attachList) {
+	/*public int createAttach(List<AttachDto> attachList) {
 		int result = 0;
 		try {
 			
@@ -94,5 +105,11 @@ public class AttachService {
 			e.printStackTrace();
 		}
 		return result;
+	}*/
+	
+	public Attach createAttach(AttachDto dto) {
+		Attach param = dto.toEntity();
+		return attachRepository.save(param);
+		
 	}
 }
