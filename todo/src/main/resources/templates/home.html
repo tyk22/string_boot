@@ -35,7 +35,7 @@ layout:decorate="~{/include/layout}">
 		forms.addEventListener('submit',(e)=>{
 			e.preventDefault();
 			const payload = new FormData(forms);
-			fetch("/attach/create",{
+			fetch("/s3/upload",{
 				method : "post",
 				body:payload
 			})
