@@ -22,7 +22,7 @@ layout:decorate="~{/include/layout}">
 			<tr th:each="attach, attachStatus : ${attachList}">
 				<td th:text="${attachStatus.count}">번호(Status의 count사용)</td>
 				<td>
-					<a th:onclick="|location.href='@{/s3/download/{id}(id=${attach.attachNo})}'|"
+					<a th:onclick="|location.href='@{/download/{id}(id=${attach.attachNo})}'|"
 						th:text="${attach.oriName}">
 						파일명
 					</a>
@@ -35,7 +35,7 @@ layout:decorate="~{/include/layout}">
 		forms.addEventListener('submit',(e)=>{
 			e.preventDefault();
 			const payload = new FormData(forms);
-			fetch("/s3/upload",{
+			fetch("/attach/create",{
 				method : "post",
 				body:payload
 			})
